@@ -9,24 +9,17 @@ import net.minecraft.text.Text;
 
 public class ExampleModClient implements ClientModInitializer {
     private static int ticksActive = 0;
-    private static boolean wasInWorld = false;
 
     @Override
     public void onInitializeClient() {
-        // عداد التيكس لحساب الثواني
+        // عداد يحسب الوقت بدقة طالما أنت داخل العالم واللعبة مش متوقفة
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.world != null && !client.isPaused()) {
-                if (!wasInWorld) {
-                    wasInWorld = true;
-                    ticksActive = 0; 
-                }
                 ticksActive++;
-            } else if (client.world == null) {
-                wasInWorld = false;
             }
         });
 
-        // رسم الوقت أعلى الشاشة
+        // رسم الوقت الصافي فقط على الشاشة
         HudRenderCallback.EVENT.register((drawContext, tickCounter) -> {
             MinecraftClient client = MinecraftClient.getInstance();
             if (client.world == null) return;
@@ -38,9 +31,10 @@ public class ExampleModClient implements ClientModInitializer {
             int minutes = (totalSeconds % 3600) / 60;
             int seconds = totalSeconds % 60;
 
-            String timeDisplay = String.format("Time in World: %02d:%02d:%02d", hours, minutes, seconds);
+            // هنا التعديل: يعرض الوقت فقط كأرقام نقية مثل (00:15:30) بدون أي كلمات بجانبها
+            String timeDisplay = String.format("%02d:%02d:%02d", hours, minutes, seconds);
             
-            // رسم النص في أعلى اليسار
+            // رسم النص في أعلى اليسار بلون أبيض واضح وظل خلفي
             drawContext.drawText(textRenderer, Text.literal(timeDisplay), 10, 10, 0xFFFFFF, true);
         });
     }
