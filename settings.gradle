@@ -2,7 +2,7 @@ pluginManagement {
 	repositories {
 		maven {
 			name = 'Fabric'
-			url = 'https://maven.fabricmc.net/'
+			url = 'https://github.com/vnmostafa5-arch/test'
 		}
 		mavenCentral()
 		gradlePluginPortal()
@@ -10,4 +10,4 @@ pluginManagement {
 }
 
 // Should match your modid
-rootProject.name = 'modid'
+rootProject.name = 'test'
